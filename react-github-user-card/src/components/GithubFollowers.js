@@ -12,7 +12,7 @@ export class GithubFollowers extends Component {
     }
 
     componentDidMount() {
-        axios.get('https://api.github.com/users/Robert-D-Campbell/followers').then(res => {
+        axios.get(`https://api.github.com/users/${this.props.handle}/followers`).then(res => {
           console.log(res)
           this.setState({
             followers: res.data

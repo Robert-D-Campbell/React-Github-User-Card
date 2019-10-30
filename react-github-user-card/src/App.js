@@ -9,61 +9,73 @@ class App extends Component {
   state = {
     id: null,
     pic: null,
-    handle: '',
+    handle: 'Robert-D-Campbell',
     name: '',
     bio: '',
     portfolio:'',
     location: '',
-    followers: null,
+    followers: [],
     following: null,
     pubRepos: null,
   };
 
   componentDidMount() {
-    axios.get('https://api.github.com/users/Robert-D-Campbell').then(res => {
-      console.log(res)
-      this.setState({
-        id: res.data.id,
-        pic: res.data.avatar_url,
-        handle: res.data.login,
-        name: res.data.name,
-        bio: res.data.bio,
-        portfolio:res.data.blog,
-        location: res.data.location,
-        followers: res.data.followers,
-        following: res.data.following,
-        pubRepos: res.data.public_repos,
-      })
-    }).catch(err => {
+      axios.get(`https://api.github.com/users/${this.state.handle}`).then(res => {
+        console.log(res)
+        this.setState({
+          id: res.data.id,
+          pic: res.data.avatar_url,
+          handle: res.data.login,
+          name: res.data.name,
+          bio: res.data.bio,
+          portfolio:res.data.blog,
+          location: res.data.location,
+          following: res.data.following,
+          pubRepos: res.data.public_repos,
+        })
+    })
+    .catch(err => {
       console.log(err)
     })
-  }
+  };
 
   
-  fetchProfile = (search) => {
-    axios.get(`https://api.github.com/users/${search}`).then(res => {
-      console.log(res)
-      this.setState({
-        id: res.data.id,
-        pic: res.data.avatar_url,
-        handle: res.data.login,
-        name: res.data.name,
-        bio: res.data.bio,
-        portfolio:res.data.blog,
-        location: res.data.location,
-        followers: res.data.followers,
-        following: res.data.following,
-        pubRepos: res.data.public_repos,
+  componentDidUpdate(prevProps, prevState) {
+    if(prevState.handle !== this.state.handle) {
+      axios.get(`https://api.github.com/users/${this.state.handle}`).then(res => {
+        console.log(res)
+        this.setState({
+          id: res.data.id,
+          pic: res.data.avatar_url,
+          handle: res.data.login,
+          name: res.data.name,
+          bio: res.data.bio,
+          portfolio:res.data.blog,
+          location: res.data.location,
+          following: res.data.following,
+          pubRepos: res.data.public_repos,
+        })
+        return res.data.followers_url;
       })
-    }).catch(err => {
-      console.log(err)
-    })
-  }
+      .catch(err => {
+        console.log(err)
+      })
+      .then(followersUrl => {
+        axios.get(followersUrl).then(res => {
+          console.log('nested axios request', res.data)
+          this.setState({followers: res.data})
+        })
+      })
+      .catch(err => console.log('axios user error', err))
+    }
+  };
+
+  
 
   render() {
     return (
       <>
-        <GithubSearch fetchProfile={this.fetchProfile}/>
+        <GithubSearch followers={this.state.followers}/>
         <GithubCard 
           pic={this.state.pic}
           key={this.state.id}
@@ -72,11 +84,10 @@ class App extends Component {
           bio={this.state.bio}
           portfolio={this.state.portfolio}
           location={this.state.location}
-          followers={this.state.followers}
           following={this.state.following}
           pubRepos={this.state.pubRepos}
         />
-        <GithubFollowers />
+        <GithubFollowers handle={this.state.handle} followers={this.state.followers}/>
       </>
     )
   }

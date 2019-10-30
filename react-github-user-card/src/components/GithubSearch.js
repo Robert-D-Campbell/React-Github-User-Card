@@ -5,22 +5,30 @@ export default class GithubSearch extends Component {
         super(props);
         console.log(props)
         this.state = {
-            searchProfile: ''
+            searchInput: ''
         }
     }
 
     handleChanges = e => {
         this.setState({
-            searchProfile: e.target.value
+            searchInput: e.target.value
         })
     }
+
+    handleSubmit = e => {
+        e.preventDefault();
+        this.setState({
+          handle: (this.state.searchInput === '' ? 'Robert-D-Campbell' : this.state.searchInput)
+        })
+      };
+    
 
     render() {
         return (
             <div className='github-search-container'>
                 <h1>Search For Your Github Profile!</h1>
-                <input type='text' value={this.state.searchProfile} onChange={this.handleChanges}/>
-                <button onClick={this.props.fetchProfile(this.state.searchProfile)}>Search</button>
+                <input type='text' value={this.state.searchInput} onChange={this.handleChanges}/>
+                <button onClick={this.handleSubmit}>Search</button>
             </div>
         )
     }
