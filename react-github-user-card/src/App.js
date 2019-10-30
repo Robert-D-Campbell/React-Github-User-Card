@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import styles from '../src/App.css'
 
 import GithubCard from './components/GithubCard'
 import GithubSearch from './components/GithubSearch';

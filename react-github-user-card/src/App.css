@@ -20,3 +20,40 @@
 .App-link {
   color: #09d3ac;
 }
+h1, h2, h3, p {
+  color:  rgb(132, 132, 132);
+  text-align: center;
+}
+.github-search-container {
+  padding-top: 2%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background: rgb(59, 59, 59);
+  line-height: 0;
+}
+.github-search-container input, button{
+  margin: 1% auto;
+}
+.github-card-container {
+color: rgb(132, 132, 132);
+}
+.github-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: left;
+  margin: 5% auto;
+}
+.profile-img {
+  border-radius: 4px;
+  width: 300px;
+  height: auto;
+}
+.github-followers-container {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap
+}

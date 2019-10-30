@@ -25,6 +25,7 @@ export class GithubFollowers extends Component {
         console.log(this.state)
         return (
             <div className='github-followers-container'>
+                <h1>Followers:</h1>
                 {this.state.followers.map(follower => <FollowerCard key={follower.id} pic={follower.avatar_url} handle={follower.login}/>
                 )}
             </div>
